@@ -1,0 +1,23 @@
+language: c
+compiler: gcc
+sudo: required
+dist: xenial
+env:
+  - CC="musl-gcc"
+addons:
+  apt:
+    packages:
+    - musl-tools
+
+install:
+  - wget http://www.lysator.liu.se/~nisse/misc/argp-standalone-1.3.tar.gz
+  - tar -xzf argp-standalone-1.3.tar.gz
+
+script:
+  - cd argp-standalone-1.3
+  - ./configure --prefix=/usr
+  - make
+  - make install
+
+notifications:
+  email: false
