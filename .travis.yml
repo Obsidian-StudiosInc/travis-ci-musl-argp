@@ -18,7 +18,7 @@ script:
   - export CC="musl-gcc"
   - export CC_FOR_BUILD="musl-gcc"
   - ./configure --prefix=/usr
-  - sed '/^CFLAGS =/ s/$/ -fgnu89-inline/' Makefile
+  - sed -i '/^CFLAGS =/ s/$/ -fgnu89-inline/' Makefile
   - make
   - make install
 
