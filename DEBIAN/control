@@ -1,0 +1,8 @@
+Package: argp-standalone
+Version: 1.3
+Section: custom
+Priority: optional
+Architecture: amd64
+Depends: musl-dev
+Maintainer: William L. Thomson Jr. <wlt-ml@o-sinc.com>
+Description: arpg standalone for musl built under Travis-CI for Travis-CI
