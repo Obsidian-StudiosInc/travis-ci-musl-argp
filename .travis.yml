@@ -20,7 +20,7 @@ jobs:
   include:
     - stage: Build
     - stage: Deploy
-      if: tag =~ ^v.*
+      if: tag =~ ^\d+
       deploy:
         provider: releases
         api_key:
