@@ -9,10 +9,12 @@ env:
   global:
     - MY_PN=argp-standalone
     - MY_PV=1.3
+    - MY_P=${MY_PN}-${MY_PV}
+    - MY_DEB=${MY_PN}_${MY_PV}-${TRAVIS_TAG}_amd64.deb
 
 install:
-  - wget http://www.lysator.liu.se/~nisse/misc/${MY_PN}-${MY_PV}.tar.gz
-  - tar -xzf ${MY_PN}-${MY_PV}.tar.gz
+  - wget http://www.lysator.liu.se/~nisse/misc/${MY_P}.tar.gz
+  - tar -xzf ${MY_P}.tar.gz
 
 jobs:
   include:
@@ -24,7 +26,7 @@ jobs:
         api_key:
           secure: Ulq39D8Njxny1249MTzr0iwmKy8qNuOghWyvMa77SP3e4SV/X2pNAvGTbuJ9GtyvFPJlxlgvUT/oO9pZX4Q53V41Q/ycVeCdCF2xmNIzWOPH/fI2k39PCn+/cd1BXPBgkopezGpLC0Jcq7KEp7vagE6lMH0nWcA+vq8gpoFuvx22FF4IfM5xM2B2bLeXq1qagLwpJRGUJdEuUALs1565CxGGRCn9E7lmG5xWk9TDJYbf3ecsiIdLxpAJXuTCT81+nJhswkaoWwhwbZaJWKjcz0gMoXJlVbZ8Jr1VdA1IOBWsAduW0WOjV3DVEr+YNE0lvnaVz/Hlog1kCxaLVhcMGpF6lgbKIiDs2C/v7hh9ze2hxxRso8+v/JUjDsCrsC+g0/L2HSaMwpxxT2QwCcXvRc8Dsbe47lcC4eeU4N6dkfGcvOJ0cZhhmZ/gVjJfXQ7qhasbOL8rNCppHYerHOObGPLAiSl3Jh8m3sp3wSbvtw+bGQpwBzCWvlMAAd074AnmlTDQrs5KKM6t0y+qNfp68e1pYoNhuzsxT0Y9xEFZjiB/Kp+F1ejeTs43Kq2T4jh/Ne0lOIqwh/GuELHQZAxYZ9ofxGWbFVrH2h+YT/OrtKBwM0Phdu7m3wkyi0uchvgcvwIMWjQqC8pV3R0OySoLYC5yBRpS06ntd38M70BBufk=
         file:
-          - ${MY_PN}_${MY_PV}-${TRAVIS_TAG}_amd64.deb
+          - ${MY_P}/${MY_DEB}
         on:
           repo: Obsidian-StudiosInc/travis-ci-musl-argp
           branch: master
@@ -32,19 +34,19 @@ jobs:
         skip_cleanup: true
 
 script:
-  - cd ${MY_PN}-${MY_PV}
-  - patch -p1 < ../${MY_PN}-${MY_PV}-throw-in-funcdef.patch
+  - cd ${MY_P}
+  - patch -p1 < ../${MY_P}-throw-in-funcdef.patch
   - export TRAVIS_COMPILER="musl-gcc"
   - export CC="musl-gcc"
   - export CC_FOR_BUILD="musl-gcc"
   - "./configure --prefix=/usr"
   - sed -i '/^CFLAGS =/ s/$/ -fgnu89-inline/' Makefile
   - make
-  - mkdir -p ${MY_PN}-${MY_PV}/usr/lib/x86_64-linux-gnu
-  - cp libargp.a ${MY_PN}-${MY_PV}/usr/lib/x86_64-linux-gnu
-  - cp -r ../DEBIAN ${MY_PN}-${MY_PV}
-  - dpkg-deb --build ${MY_PN}-${MY_PV}
-  - if [ "${TRAVIS_TAG}" ]; then mv ${MY_PN}-${MY_PV}.deb ${MY_PN}_${MY_PV}-${TRAVIS_TAG}_amd64.deb ; fi
+  - mkdir -p ${MY_P}/usr/lib/x86_64-linux-gnu
+  - cp libargp.a ${MY_P}/usr/lib/x86_64-linux-gnu
+  - cp -r ../DEBIAN ${MY_P}
+  - dpkg-deb --build ${MY_P}
+  - if [ "${TRAVIS_TAG}" ]; then mv ${MY_P}.deb ${MY_DEB} ; fi
   - sudo dpkg -i *.deb
 
 notifications:
