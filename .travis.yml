@@ -23,7 +23,7 @@ jobs:
         api_key:
           secure: Ulq39D8Njxny1249MTzr0iwmKy8qNuOghWyvMa77SP3e4SV/X2pNAvGTbuJ9GtyvFPJlxlgvUT/oO9pZX4Q53V41Q/ycVeCdCF2xmNIzWOPH/fI2k39PCn+/cd1BXPBgkopezGpLC0Jcq7KEp7vagE6lMH0nWcA+vq8gpoFuvx22FF4IfM5xM2B2bLeXq1qagLwpJRGUJdEuUALs1565CxGGRCn9E7lmG5xWk9TDJYbf3ecsiIdLxpAJXuTCT81+nJhswkaoWwhwbZaJWKjcz0gMoXJlVbZ8Jr1VdA1IOBWsAduW0WOjV3DVEr+YNE0lvnaVz/Hlog1kCxaLVhcMGpF6lgbKIiDs2C/v7hh9ze2hxxRso8+v/JUjDsCrsC+g0/L2HSaMwpxxT2QwCcXvRc8Dsbe47lcC4eeU4N6dkfGcvOJ0cZhhmZ/gVjJfXQ7qhasbOL8rNCppHYerHOObGPLAiSl3Jh8m3sp3wSbvtw+bGQpwBzCWvlMAAd074AnmlTDQrs5KKM6t0y+qNfp68e1pYoNhuzsxT0Y9xEFZjiB/Kp+F1ejeTs43Kq2T4jh/Ne0lOIqwh/GuELHQZAxYZ9ofxGWbFVrH2h+YT/OrtKBwM0Phdu7m3wkyi0uchvgcvwIMWjQqC8pV3R0OySoLYC5yBRpS06ntd38M70BBufk=
         file:
-          - argp-standalone-${MY_PV}-${TRAVIS_TAG}.deb
+          - argp-standalone_${MY_PV}-${TRAVIS_TAG}_amd64.deb
         on:
           repo: Obsidian-StudiosInc/travis-ci-musl-argp
           branch: master
@@ -42,7 +42,7 @@ script:
   - mkdir -p argp-standalone-${MY_PV}/usr/lib/x86_64-linux-gnu
   - cp libargp.a argp-standalone-${MY_PV}/usr/lib/x86_64-linux-gnu
   - cp -r ../DEBIAN argp-standalone-${MY_PV}
-  - dpkg --contents argp-standalone-${MY_PV}
+  - dpkg-deb --build argp-standalone-${MY_PV}
   - if [ "${TRAVIS_TAG}" ]; then mv argp-standalone-${MY_PV}.deb argp-standalone_${MY_PV}-${TRAVIS_TAG}_amd64.deb ; fi
   - sudo dpkg -i *.deb
 
